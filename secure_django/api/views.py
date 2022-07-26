@@ -6,10 +6,13 @@ from rest_framework import status
 from business.models import Customer
 from api.serializer import CustomerSerializer
 
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 
 
 class CustomerView(APIView):
+    permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
         customers = Customer.published.all()
         # customers = Customer.published.all().filter('published') 
@@ -42,6 +45,7 @@ def resource_checker(model):
 
 class CustomerDetailView(APIView):
 
+    permission_classes = (IsAuthenticated,)
     @resource_checker(Customer)
     def get(self, request, pk, format=None):
         customer = Customer.published.get(pk=pk)
